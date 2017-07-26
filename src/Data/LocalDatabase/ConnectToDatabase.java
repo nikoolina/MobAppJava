@@ -5,7 +5,7 @@
  */
 package Data.LocalDatabase;
 
-import Logic.Kontakt;
+import Logic.Imenik;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -16,10 +16,10 @@ import static Data.LocalDatabase.DataTransfer.insertKontakt;
  * @author tin
  */
 public class ConnectToDatabase {
-
+    /**
      * setting up a connection.
      *
-     * @return
+     * @return connection
      * @throws Exception
      */
     public static Connection getConnection() throws Exception {
@@ -27,17 +27,17 @@ public class ConnectToDatabase {
         try {
 
             String driver = "com.mysql.jdbc.Driver";
-            String url ="jdbc:mysql://localhost:3306/MobitelData?zeroDateTimeBehavior=convertToNull";
-			String username = "root";
-            String password = "cres";
+            String url ="jdbc:mysql://localhost:3306/Mobitel?characterEncoding=UTF-8&useSSL=false";
+			String username = "";
+            String password = "";
             Class.forName(driver);
 
             Connection conn = DriverManager.getConnection(url, username, password);
-//            System.out.println("Connected!");
+            System.out.println("Connected to database Mobitel!");
             return conn;
         } catch (Exception e) {
 
-            System.out.println(e);
+            System.out.println(">> ConnectToDatabase.getconnection() " + e);
         }
 
         return null;

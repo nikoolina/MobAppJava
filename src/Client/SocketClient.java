@@ -15,7 +15,7 @@ public class SocketClient {
        
     public void run() throws Exception {
         String a;
-        Socket SOCK = new Socket("127.0.1.1", 8898);
+        Socket SOCK = new Socket("192.168.0.15", 8877);
         do {
             PrintStream PS = new PrintStream(SOCK.getOutputStream());
             
@@ -34,4 +34,3 @@ public class SocketClient {
 
     }
 }
-

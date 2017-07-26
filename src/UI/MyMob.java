@@ -16,6 +16,6 @@ public class MyMob {
     public static void main(String[] args) throws Exception {
 
         ConsoleMob.startMob();
-    
+        
     }
 }

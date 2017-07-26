@@ -7,22 +7,23 @@ package UI;
 
 import Client.SimClient;
 import Data.LocalDatabase.DataTransfer;
-import Logic.Kontakt;
-import Logic.Message;
+import Data.ServerDataBasePackage.DataTransferServer;
+import Logic.Imenik;
+import Logic.Poruka;
 import Logic.SimKartica;
 import java.util.Scanner;
 
 /**
- * Klasa koja sluzi za rad sa programom.
- * koristi logiku ostalih klasa.
+ * Klasa koja sluzi za rad sa programom. koristi logiku ostalih klasa.
+ *
  * @author tin
  */
 public class ConsoleMob {
 
     /**
-     * metoda koja se koristi za pokretanje aplikacije.
-     * sadrzi kostur aplikacije
-     * @throws Exception 
+     * metoda koja se koristi za pokretanje aplikacije. sadrzi kostur aplikacije
+     *
+     * @throws Exception
      */
     static void startMob() throws Exception {
         Scanner sc = new Scanner(System.in);
@@ -32,17 +33,43 @@ public class ConsoleMob {
         final String ANSI_RED = "\u001B[31m";
         final String ANSI_BLUE = "\u001B[34m";
 
-//ODABIR SIM KARTICE        
-        System.out.println("Unesite serijski broj kartice ");
-        String sim = sc.nextLine();
-        SimKartica simKartica = new SimKartica(sim);
+//ODABIR SIM KARTICE    
+        System.out.println(ANSI_YELLOW + "DOBRODOŠLI ---- MOBAPP ---- PC VERSION_0.1" + ANSI_RESET);
+        System.out.println("Želite li aktivirati karticu ili se ulogirati ? (A/L)");
+        String odabir = sc.nextLine();
 
-        System.out.println(simKartica);
+        SimKartica simKartica;
+        SimClient client = new SimClient();
+        switch (odabir) {
+            case "A": {
 
-        if (simKartica.getSerijskiBroj() == null) {
+//                client = new SimClient();
+                client.sayHi();
+
+                break;
+            }
+            case "L": {
+                client.posaljiPinNaServer();
+                break;
+            }
+            default: {
+                System.out.println("Nije unesena SimKartica ");
+                break;
+            }
+        }
+
+        String serijskiBroj = client.dohvatiSerijskiBroj();
+
+        System.out.println("SEIJSKI BROJ ::: " + serijskiBroj);
+        System.out.println("USPILI!!!");
+        simKartica = new SimKartica();
+
+        if (serijskiBroj.equals("0")) {
             System.out.println("IZASLI STE IZ PROGRAMA");
         } else {
 // NAKON ODABIRA SIM KARTICE.....
+
+            Thread.sleep(1000);
             int num;
 
             System.out.println(ANSI_GREEN + " Wellcome to new exsperience!!!" + ANSI_RESET);
@@ -64,9 +91,9 @@ public class ConsoleMob {
 
                 String name;
                 String lastname;
-                int number;
+                String number;
                 String email;
-                Kontakt k = new Kontakt();
+                Imenik k = new Imenik();
 
                 switch (num) {
                     case 1: {
@@ -75,15 +102,19 @@ public class ConsoleMob {
                         System.out.print("Enter lastname : ");
                         lastname = sc.next();
                         System.out.print("Enter phone number : ");
-                        number = sc.nextInt();
+                        number = sc.next();
                         System.out.print("Enter e-mail : ");
                         email = sc.next();
                         k.setIme(name);
                         k.setPrezime(lastname);
-                        k.setBroj(number);
+                        k.setBrojTelefona(number);
                         k.setEmail(email);
 
-                        if (Data.LocalDatabase.DataTransfer.insertKontakt(Data.LocalDatabase.ConnectToDatabase.getConnection(), k)) {
+                        // possprema simKarticu u Imenik
+                        simKartica.setSerijskiBroj(Integer.parseInt(serijskiBroj));
+                        DataTransfer.createNewTable(simKartica.getSerijskiBroj());
+
+                        if (Data.LocalDatabase.DataTransfer.insertKontakt(Data.LocalDatabase.ConnectToDatabase.getConnection(), k, simKartica.getSerijskiBroj())) {
                             System.out.println(ANSI_GREEN + "Contact " + k.getIme() + " inserted" + ANSI_RESET);
                         } else {
                             System.out.println(ANSI_RED + "Contact " + k.getIme() + " NOT inserted" + ANSI_RESET);
@@ -93,7 +124,7 @@ public class ConsoleMob {
                     case 2: {
                         System.out.print("Enter name : ");
                         name = sc.next();
-                        if (Data.LocalDatabase.DataTransfer.deleteKontakt(Data.LocalDatabase.ConnectToDatabase.getConnection(), name)) {
+                        if (Data.LocalDatabase.DataTransfer.deleteKontakt(Data.LocalDatabase.ConnectToDatabase.getConnection(), name, simKartica.getSerijskiBroj())) {
                             System.out.println(ANSI_GREEN + "Contact : " + name + " deleted" + ANSI_RESET);
                         } else {
                             System.out.println(ANSI_RED + "Contact " + name + " does not exist" + ANSI_RESET);
@@ -103,13 +134,13 @@ public class ConsoleMob {
                     case 3: {
                         System.out.print("Enter name: ");
                         name = sc.next();
-                        if (DataTransfer.findKontakt(Data.LocalDatabase.ConnectToDatabase.getConnection(), name) != null) {
+                        if (DataTransfer.findKontakt(Data.LocalDatabase.ConnectToDatabase.getConnection(), name, simKartica.getSerijskiBroj()) != null) {
 
-                            System.out.println(DataTransfer.findKontakt(Data.LocalDatabase.ConnectToDatabase.getConnection(), name));
+                            System.out.println(DataTransfer.findKontakt(Data.LocalDatabase.ConnectToDatabase.getConnection(), name, simKartica.getSerijskiBroj()));
 
                             System.out.print("Enter new phone number : ");
-                            number = sc.nextInt();
-                            if (Data.LocalDatabase.DataTransfer.updateKontakt(Data.LocalDatabase.ConnectToDatabase.getConnection(), name, number)) {
+                            number = sc.next();
+                            if (Data.LocalDatabase.DataTransfer.updateKontakt(Data.LocalDatabase.ConnectToDatabase.getConnection(), name, number, simKartica.getSerijskiBroj())) {
                                 System.out.println(ANSI_GREEN + "Contact : " + name + " updated" + ANSI_RESET);
                             } else {
                                 System.out.println(ANSI_RED + "Contact " + name + " NOT updated" + ANSI_RESET);
@@ -124,7 +155,7 @@ public class ConsoleMob {
                     case 4: {
                         System.out.print("Enter name :");
                         name = sc.next();
-                        k = DataTransfer.findKontakt(Data.LocalDatabase.ConnectToDatabase.getConnection(), name);
+                        k = DataTransfer.findKontakt(Data.LocalDatabase.ConnectToDatabase.getConnection(), name, simKartica.getSerijskiBroj());
                         if (k != null) {
                             System.out.println(k);
                         } else {
@@ -133,7 +164,8 @@ public class ConsoleMob {
                         break;
                     }
                     case 5: {
-                        Data.LocalDatabase.DataTransfer.viewTable();
+                        simKartica.setSerijskiBroj(Integer.parseInt(serijskiBroj));
+                        Data.LocalDatabase.DataTransfer.viewTable(simKartica.getSerijskiBroj());
                         break;
                     }
                     case 6: {
@@ -141,7 +173,7 @@ public class ConsoleMob {
                         String s = sc.next();
                         switch (s) {
                             case "Y": {
-                                if (DataTransfer.resetTable(Data.LocalDatabase.ConnectToDatabase.getConnection())) {
+                                if (DataTransfer.resetTable(Data.LocalDatabase.ConnectToDatabase.getConnection(), simKartica.getSerijskiBroj())) {
                                     System.out.println("All your files are deleted");
 
                                 } else {
@@ -158,36 +190,56 @@ public class ConsoleMob {
                         break;
                     }
                     case 7: {
-    
+
                         SimClient simClient = new SimClient();
                         simClient.setSimKartica(simKartica);
                         simClient.run();
-                           Message mm = new Message();
+                        Poruka mm = new Poruka();
+
                         System.out.println("unesite primatelja");
                         String primatelj = sc.next();
-                        k = DataTransfer.findKontakt(Data.LocalDatabase.ConnectToDatabase.getConnection(), primatelj);
+
+                        k = DataTransfer.findKontakt(Data.LocalDatabase.ConnectToDatabase.getConnection(), primatelj, simKartica.getSerijskiBroj());
                         if (k != null) {
-                            mm.setReciever(k);
-                           
+
+                            //novo
+                            String brojPrimatelja = k.getBrojTelefona();
+                            SimKartica simPrimatelja = DataTransferServer.findSim(Data.ServerDataBasePackage.ConnectToServerBase.getConnection(), brojPrimatelja);
+
+                            if (simPrimatelja != null) {
+                                mm.setBrTelPrimatelj(simPrimatelja.getTelefonskiBroj());
+                            } else {
+                                System.out.println("KARTICA NIJE AKTIVIRANA");
+                            }
+
+                            //ovo je bilo//
+//                            mm.setBrTelPrimatelj(k.getBrojTelefona());
+                            //kraj novog
                         } else {
                             System.out.println("kontakt ne postoji..ili se vratite na MENU i unesite novi kontakt ");
+
                         }
-                        
-                   
-                        mm.setTextMessage(simClient.getMessage());
-                        mm.setSimKartica(simClient.getSimKartica());
-                        mm.setIsMessageRead("false");
-                        if(Data.ServerDataBasePackage.DataTransferServer.insertMessage(Data.ServerDataBasePackage.ConnectToServerBase.getConnection(), mm) ){
-                            
+                        mm.setBrTelPosiljatelj(simClient.getSimKartica().getTelefonskiBroj());
+                        System.out.println("Unesite poruku ... ");
+
+                        Scanner sc1 = new Scanner(System.in);
+                        String textPoruke = sc1.nextLine();
+
+                        mm.setTextMessage(textPoruke);
+                        mm.setBrTelPrimatelj(k.getBrojTelefona());
+                        mm.setPorukaProcitana(false);
+
+                        if (Data.ServerDataBasePackage.DataTransferServer.insertMessage(Data.ServerDataBasePackage.ConnectToServerBase.getConnection(), mm)) {
+
                             System.out.println(ANSI_GREEN + "message send " + ANSI_RESET);
-                        }else{
+                        } else {
                             System.out.println(ANSI_RED + "message not send" + ANSI_RESET);
                         }
 
                         break;
                     }
                     case 8: {
-                        
+
                         break;
                     }
                 }

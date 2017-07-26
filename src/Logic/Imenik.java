@@ -6,79 +6,53 @@
 package Logic;
 
 /**
- * klasa koja sluzi za spremanje kontakata u imenik.
+ * Klasa koja sadrzi podatke o kontaktu.
  * @author tin
  */
 public class Imenik {
+    private String ime;
+    private String prezime;
+    private String brojTelefona;
+    private String email;
 
-    private Kontakt[] kontakt = new Kontakt[5];
-
-    public Kontakt[] getKontakt() {
-        return kontakt;
-    }
-/**
- * postavljanje kontakata.
- * @param kon 
- */
-    public void setKontakt(Kontakt kon) {
-        if (this.kapacitet(kontakt) > 0) {
-            for (int i = 0; i < kontakt.length; i++) {
-                if (kontakt[i] == null) {
-                    kontakt[i] = kon;
-                    System.out.println("kontakt spremljen");
-                    break;
-                }
-            }
-        } else {
-            System.out.println("Nema mjesta!");
-        }
-    }
-/**
- * provjera kapaciteta u polju kontakata
- * @param kontakt
- * @return 
- */
-    public int kapacitet(Kontakt[] kontakt) {
-        int brslm = 0;
-        for (int i = 0; i < kontakt.length; i++) {
-
-            if (kontakt[i] == null) {
-                brslm++;
-
-            }
-        }
-        return brslm;
+    public String getPrezime() {
+        return prezime;
     }
 
-    /**
-     * Metoda koja pretrazuje kontakte u imeniku po imenu
-     *
-     * @param ime parametar za koji pretrazuje da li se nalazi u imeniku
-     * @return Kontakt iz imenika kojem argument ime odgovara upaznom parametru
-     */
-    public Kontakt pretraziPoImenu(String ime) {
+    public void setPrezime(String prezime) {
+        this.prezime = prezime;
+    }
 
-        Kontakt nadjeniKontakt = new Kontakt();
+    public String getEmail() {
+        return email;
+    }
 
-        for (Kontakt kontakt : kontakt) {
-            if (kontakt.getIme().equals(ime)) {
-                nadjeniKontakt = kontakt;
-                return nadjeniKontakt;
-            }
-        }
-        return nadjeniKontakt;
+    public void setEmail(String email) {
+        this.email = email;
     }
     
-    public void ispisImenika(){
-        for (Kontakt kontakt1 : kontakt) {
-            if(kontakt1 != null){
-                
-            
-            System.out.println(kontakt1.getIme());
-            }
-        }
-        
-        
+    public String getIme() {
+        return ime;
     }
 
+    public void setIme(String ime) {
+        this.ime = ime;
+    }
+
+
+    
+    @Override
+    public String toString() {
+        return "Ime : " + this.ime + ", Prezime : " + prezime + "\n broj telefona : " + this.getBrojTelefona() + "\n e-mail : " + this.getEmail() + "\n";
+    }
+
+    public String getBrojTelefona() {
+        return brojTelefona;
+    }
+
+    public void setBrojTelefona(String brojTelefona) {
+        this.brojTelefona = brojTelefona;
+    }
+    
 }
+ 

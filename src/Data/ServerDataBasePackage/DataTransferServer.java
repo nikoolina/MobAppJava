@@ -5,7 +5,7 @@
  */
 package Data.ServerDataBasePackage;
 
-import Logic.Message;
+import Logic.Poruka;
 import Logic.SimKartica;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,26 +20,28 @@ import java.util.logging.Logger;
  * @author tin
  */
 public class DataTransferServer {
-
+    
     /**
-     * metoda ulazi u program ovisno o potvrdi tocnosti Serisjkog broja .
+     * metoda koja pretražuje po broju telefona primatelja poruke da 
+     * li je kartica s tim telefonskim brojem aktivirana 
+     * tj. da li postoji korisnik kojem saljemo poruku .
      * @param conn - konekcija na bazu podataka
      * @param serijskiBroj - unikatna vrijednost
-     * @return 
+     * @return SimKartica
      */
-    public static SimKartica findSim(Connection conn, String serijskiBroj) {
+    public static SimKartica findSim(Connection conn, String brojTelefona) {
 
         try {
 
-            String sql = "Select SerijskiBroj, Pin ,  Puk, BrojTelefona from SimData  where SerijskiBroj = ? ";
+            String sql = "Select SerijskiBroj, Pin , Puk, BrojTelefona from Kartica where BrojTelefona = ? ";
             PreparedStatement pstm = conn.prepareStatement(sql);
-            pstm.setString(1, serijskiBroj);
+            pstm.setString(1 , brojTelefona);
 
             ResultSet rs = pstm.executeQuery();
             if (rs.next()) {
-                String sb = rs.getString("SerijskiBroj");
-                String pin = rs.getString("Pin");
-                String puk = rs.getString("Puk");
+                int sb = rs.getInt("SerijskiBroj");
+                int pin = rs.getInt("Pin");
+                int puk = rs.getInt("Puk");
                 String bt = rs.getString("BrojTelefona");
 
                 try {
@@ -61,23 +63,61 @@ public class DataTransferServer {
         }
         return null;
     }
-    public static boolean insertMessage(Connection conn,Message message){
+    
+
+    /**
+     * metoda ulazi u program ovisno o potvrdi tocnosti Serisjkog broja .
+     * @param conn - konekcija na bazu podataka
+     * @param serijskiBroj - unikatna vrijednost
+     * @return 
+     */
+    public static SimKartica findSim(Connection conn, int pin1) {
+
+        try {
+
+            String sql = "Select SerijskiBroj, Pin , Puk, BrojTelefona from Kartica where Pin = ? ";
+            PreparedStatement pstm = conn.prepareStatement(sql);
+            pstm.setInt(1 , pin1);
+
+            ResultSet rs = pstm.executeQuery();
+            if (rs.next()) {
+                int sb = rs.getInt("SerijskiBroj");
+                int pin = rs.getInt("Pin");
+                int puk = rs.getInt("Puk");
+                String bt = rs.getString("BrojTelefona");
+
+                try {
+                    SimKartica sim = new SimKartica();
+                    sim.setSerijskiBroj(sb);
+                    sim.setPin(pin);
+                    sim.setPuk(puk);
+                    sim.setTelefonskiBroj(bt);
+
+                    return sim;
+                } catch (Exception ex) {
+                    Logger.getLogger(DataTransferServer.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(DataTransferServer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    public static boolean insertMessage(Connection conn,Poruka message){
                 try {
                     /**
-                     * nesto nije u redu sa ovom varijablom
+                     * nesto nije u redu 
                      */
-            String sql = "Insert into MessageData(text, Sender, readMessage, reciever ) values(?,?, ?, ?)";
+            String sql = "Insert into Poruke(Posiljatelj, TextPoruke, Primatelj, Procitano) values(?, ?, ?, ?)";
             PreparedStatement pstm = conn.prepareStatement(sql);
             
-            
-            pstm.setString(1, message.getTextMessage());
-            pstm.setString(2, message.getSimKartica().getTelefonskiBroj() );
-                    
-            pstm.setString(3, message.getIsMessageRead());
-            pstm.setString(4, message.getReciever().getIme());
-//            pstm.setInt(5, message.getId());
-           
-            
+            pstm.setString(1, message.getBrTelPosiljatelj());
+            pstm.setString(2, message.getTextMessage());
+            pstm.setString(3, message.getBrTelPrimatelj());
+            pstm.setBoolean(4, false);
+     
             if (pstm.executeUpdate() == 1) {
                 return true;
             }

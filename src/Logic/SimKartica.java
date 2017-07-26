@@ -5,7 +5,7 @@
  */
 package Logic;
 
-import Data.ServerDataBasePackage.ConnectToServerBase;
+import Data.LocalDatabase.ConnectToDatabase;
 import Data.ServerDataBasePackage.DataTransferServer;
 import java.io.Serializable;
 import java.sql.Connection;
@@ -17,10 +17,10 @@ import java.sql.Connection;
 public class SimKartica implements Serializable
 {
 
-    private String telefonskiBroj;
-    private String serijskiBroj;
-    private String pin;
-    private String puk;
+    private String brojTelefona;
+    private int serijskiBroj;
+    private int pin;
+    private int puk;
 
     public SimKartica() {
 
@@ -32,16 +32,16 @@ public class SimKartica implements Serializable
      * @param serijskiBroj - unikatna vrijednost
      * @throws Exception 
      */
-    public SimKartica(String serijskiBroj) throws Exception {
+    public SimKartica(int pin) throws Exception {
         
-        Connection conn = ConnectToServerBase.getConnection();
+        Connection conn = ConnectToDatabase.getConnection();
         
-        SimKartica userSim = DataTransferServer.findSim(conn, serijskiBroj);
+        SimKartica userSim = DataTransferServer.findSim(conn, pin);
         
         if(userSim != null) {
            this.pin = userSim.pin;
            this.puk = userSim.puk;
-           this.telefonskiBroj = userSim.telefonskiBroj;
+           this.brojTelefona = userSim.brojTelefona;
            this.serijskiBroj = userSim.serijskiBroj;
         } 
         else {
@@ -51,35 +51,35 @@ public class SimKartica implements Serializable
         
     }
 
-    public String getPin() {
+    public int getPin() {
         return pin;
     }
 
-    public void setPin(String pin) {
+    public void setPin(int pin) {
         this.pin = pin;
     }
 
-    public String getPuk() {
+    public int getPuk() {
         return puk;
     }
 
-    public void setPuk(String puk) {
+    public void setPuk(int puk) {
         this.puk = puk;
     }
 
     public void setTelefonskiBroj(String telefonskiBroj) {
-        this.telefonskiBroj = telefonskiBroj;
+        this.brojTelefona = telefonskiBroj;
     }
 
-    public void setSerijskiBroj(String serijskiBroj) {
+    public void setSerijskiBroj(int serijskiBroj) {
         this.serijskiBroj = serijskiBroj;
     }
 
     public String getTelefonskiBroj() {
-        return telefonskiBroj;
+        return brojTelefona;
     }
 
-    public String getSerijskiBroj() {
+    public int getSerijskiBroj() {
         return serijskiBroj;
     }
  /**
@@ -87,7 +87,7 @@ public class SimKartica implements Serializable
   * @param pin
   * @return true ukoliko je pin tocan
   */
-    public boolean provjeriPin(String pin) {
+    public boolean provjeriPin(int pin) {
         if (this.pin == pin) {
             System.out.println("pin je tocan");
             return true;
@@ -102,8 +102,8 @@ public class SimKartica implements Serializable
   * @param stariPin - provjera starog pina 
   * @return 
   */
-    public boolean promjenaPina(String noviPin, String stariPin) {
-        if (stariPin.equals(this.pin)) {
+    public boolean promjenaPina(int noviPin, int stariPin) {
+        if (stariPin == this.pin) {
             pin = noviPin;
             System.out.println("pin promijenjen , novi pin : " + noviPin);
             return true;
@@ -117,8 +117,8 @@ public class SimKartica implements Serializable
      * @param puk
      * @return 
      */
-    public boolean provjeriPuk(String puk) {
-        if (this.puk.equals(puk)) {
+    public boolean provjeriPuk(int puk) {
+        if (this.puk == puk) {
             System.out.println("puk je tocan");
             return true;
         } else {
@@ -133,8 +133,8 @@ public class SimKartica implements Serializable
   * @param puk
   * @return 
   */
-    public boolean resetPina(String noviPin, String puk) {
-        if (puk.equals(this.puk) && pin.equals(this.pin)) {
+    public boolean resetPina(int noviPin, int puk) {
+        if (puk == this.puk && pin == this.pin) {
 
             this.pin = noviPin;
             System.out.println("puk i pin su valjani ,pin je vracen na tvornicku postavku :" + noviPin);
@@ -148,7 +148,7 @@ public class SimKartica implements Serializable
 
     @Override
     public String toString() {
-        return "SimKartica{" + "telefonskiBroj=" + telefonskiBroj + ", serijskiBroj=" + serijskiBroj + ", pin=" + pin + ", puk=" + puk + '}';
+        return "SimKartica{" + "telefonskiBroj=" + brojTelefona + ", serijskiBroj=" + serijskiBroj + ", pin=" + pin + ", puk=" + puk + '}';
     }
     
 
