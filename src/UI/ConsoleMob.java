@@ -61,6 +61,7 @@ public class ConsoleMob {
         String serijskiBroj = client.dohvatiSerijskiBroj();
 
         System.out.println("SERIJSKI BROJ ::: " + serijskiBroj);
+        
         simKartica = new SimKartica();
 
         if (serijskiBroj.equals("0")) {
@@ -195,7 +196,7 @@ public class ConsoleMob {
                         simClient.run();
                         Poruka mm = new Poruka();
 
-                        System.out.println("unesite primatelja");
+                        System.out.println("unesite ime primatelja");
                         String primatelj = sc.next();
 
                         k = DataTransfer.findKontakt(Data.LocalDatabase.ConnectToDatabase.getConnection(), primatelj, simKartica.getSerijskiBroj());
@@ -203,10 +204,11 @@ public class ConsoleMob {
 
                             //novo
                             String brojPrimatelja = k.getBrojTelefona();
-                            SimKartica simPrimatelja = DataTransferServer.findSim(Data.ServerDataBasePackage.ConnectToServerBase.getConnection(), brojPrimatelja);
-
-                            if (simPrimatelja != null) {
-                                mm.setBrTelPrimatelj(simPrimatelja.getTelefonskiBroj());
+                            // ovo ne moze tu ici jer server nije na istom racunalu!!
+//                            SimKartica simPrimatelja = DataTransferServer.findSim(Data.ServerDataBasePackage.ConnectToServerBase.getConnection(), brojPrimatelja);
+                            System.out.println(brojPrimatelja);	
+                            if (brojPrimatelja != null) {
+                                mm.setBrTelPrimatelj(brojPrimatelja);
                             } else {
                                 System.out.println("KARTICA NIJE AKTIVIRANA");
                             }
@@ -228,14 +230,14 @@ public class ConsoleMob {
                         mm.setBrTelPrimatelj(k.getBrojTelefona());
                         mm.setPorukaProcitana(false);
 
-                        if (Data.ServerDataBasePackage.DataTransferServer.insertMessage(Data.ServerDataBasePackage.ConnectToServerBase.getConnection(), mm)) {
-
-                            System.out.println(ANSI_GREEN + "message send " + ANSI_RESET);
-                        } else {
-                            System.out.println(ANSI_RED + "message not send" + ANSI_RESET);
-                        }
-
-                        break;
+//                        if (Data.ServerDataBasePackage.DataTransferServer.insertMessage(Data.ServerDataBasePackage.ConnectToServerBase.getConnection(), mm)) {
+//
+//                            System.out.println(ANSI_GREEN + "message send " + ANSI_RESET);
+//                        } else {
+//                            System.out.println(ANSI_RED + "message not send" + ANSI_RESET);
+//                        }
+//
+//                        break;
                     }
                     case 8: {
 

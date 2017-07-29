@@ -33,16 +33,16 @@ public class DataTransferServer {
 
         try {
 
-            String sql = "Select SerijskiBroj, Pin , Puk, BrojTelefona from Kartica where BrojTelefona = ? ";
+            String sql = "Select serijskiBroj, pin , puk, brojTelefona from simKartica where brojTelefona = ? ";
             PreparedStatement pstm = conn.prepareStatement(sql);
             pstm.setString(1 , brojTelefona);
 
             ResultSet rs = pstm.executeQuery();
             if (rs.next()) {
-                int sb = rs.getInt("SerijskiBroj");
-                int pin = rs.getInt("Pin");
-                int puk = rs.getInt("Puk");
-                String bt = rs.getString("BrojTelefona");
+                int sb = rs.getInt("serijskiBroj");
+                int pin = rs.getInt("pin");
+                int puk = rs.getInt("puk");
+                String bt = rs.getString("brojTelefona");
 
                 try {
                     SimKartica sim = new SimKartica();
@@ -75,16 +75,16 @@ public class DataTransferServer {
 
         try {
 
-            String sql = "Select SerijskiBroj, Pin , Puk, BrojTelefona from Kartica where Pin = ? ";
+            String sql = "Select serijskiBroj, pin , puk, brojTelefona from simKartica where pin = ? ";
             PreparedStatement pstm = conn.prepareStatement(sql);
             pstm.setInt(1 , pin1);
 
             ResultSet rs = pstm.executeQuery();
             if (rs.next()) {
-                int sb = rs.getInt("SerijskiBroj");
-                int pin = rs.getInt("Pin");
-                int puk = rs.getInt("Puk");
-                String bt = rs.getString("BrojTelefona");
+                int sb = rs.getInt("serijskiBroj");
+                int pin = rs.getInt("pin");
+                int puk = rs.getInt("puk");
+                String bt = rs.getString("brojTelefona");
 
                 try {
                     SimKartica sim = new SimKartica();

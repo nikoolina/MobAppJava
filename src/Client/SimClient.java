@@ -132,9 +132,11 @@ public class SimClient {
                         sim.setPin(pin);
                         sim.setPuk(puk);
                         sim.setTelefonskiBroj(brTelefona);
+                        
                         System.out.println("SimClient: " + sim);
                         pw.println(pin + " " + puk + " " + brTelefona);
                         pw.flush();
+                       
                         break;
                     }
                     default: {
