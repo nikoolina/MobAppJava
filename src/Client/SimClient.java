@@ -41,8 +41,8 @@ public class SimClient {
         this.simKartica = simKartica;
     }
 
-    static String hostname = "192.168.0.17";
-    static int port = 8891;
+    static String hostname = "127.0.1.1";
+    static int port = 8896;
 
     DataOutputStream dataOut;
     private Socket socket;
@@ -92,7 +92,7 @@ public class SimClient {
         SimKartica sim;
 
         try {
-            incoming = new Socket("192.168.0.12", 8896);
+            incoming = new Socket("127.0.1.1", 8896);
 
             ins = incoming.getInputStream();
             ous = incoming.getOutputStream();
@@ -158,7 +158,7 @@ public class SimClient {
         SimKartica sim;
 
         try {
-            incoming = new Socket("192.168.0.12", 8896);
+            incoming = new Socket("127.0.1.1", 8896);
 
             ins = incoming.getInputStream();
             ous = incoming.getOutputStream();
@@ -204,11 +204,12 @@ public class SimClient {
 
     public String dohvatiSerijskiBroj() throws IOException, InterruptedException {
 
-        PrintWriter pw = new PrintWriter(ous);
+        PrintWriter pw= new PrintWriter(ous);
+
         Scanner sc = new Scanner(incoming.getInputStream());
         String serBr = sc.nextLine();
-//        System.out.println("SEIJSKI BROJ ::: " + serBr);
-
+//        System.out.println("SERIJSKI BROJ ::: " + serBr);
+       
         return serBr.substring(serBr.lastIndexOf(" ") + 1);
     }
 }

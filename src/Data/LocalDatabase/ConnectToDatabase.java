@@ -28,8 +28,8 @@ public class ConnectToDatabase {
 
             String driver = "com.mysql.jdbc.Driver";
             String url ="jdbc:mysql://localhost:3306/Mobitel?characterEncoding=UTF-8&useSSL=false";
-			String username = "";
-            String password = "";
+			String username = "root";
+            String password = "cres";
             Class.forName(driver);
 
             Connection conn = DriverManager.getConnection(url, username, password);

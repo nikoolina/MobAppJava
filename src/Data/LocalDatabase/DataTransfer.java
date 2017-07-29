@@ -60,7 +60,7 @@ public class DataTransfer {
             //"jdbc:mysql://localhost:3306/Mobitel?characterEncoding=UTF-8&useSSL=false"
 
             Statement st = ConnectToDatabase.getConnection().createStatement();
-            String url = "jdbc:mysql://localhost:3306/mobitel?characterEncoding=UTF-8&useSSL=false";
+            String url = "jdbc:mysql://localhost:3306/Mobitel?characterEncoding=UTF-8&useSSL=false";
             String imenik = "Imenik" + serijskiBrojKartice;
             // SQL statement for creating a new table
             String sql = "CREATE TABLE IF NOT EXISTS " + imenik + " (\n"
@@ -116,7 +116,7 @@ public class DataTransfer {
      * metoda za pregled tablice baze podataka .
      */
     public static void viewTable(int serijskiBrojKartice) {
-  String imenik = "imenik" + serijskiBrojKartice;
+  String imenik = "Imenik" + serijskiBrojKartice;
         try {
             Statement st = ConnectToDatabase.getConnection().createStatement();
             ResultSet rs = st.executeQuery("SELECT ime ,prezime , brojTelefona , email FROM  " + imenik);

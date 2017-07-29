@@ -60,8 +60,7 @@ public class ConsoleMob {
 
         String serijskiBroj = client.dohvatiSerijskiBroj();
 
-        System.out.println("SEIJSKI BROJ ::: " + serijskiBroj);
-        System.out.println("USPILI!!!");
+        System.out.println("SERIJSKI BROJ ::: " + serijskiBroj);
         simKartica = new SimKartica();
 
         if (serijskiBroj.equals("0")) {
@@ -110,7 +109,7 @@ public class ConsoleMob {
                         k.setBrojTelefona(number);
                         k.setEmail(email);
 
-                        // possprema simKarticu u Imenik
+                        // posprema simKarticu u Imenik
                         simKartica.setSerijskiBroj(Integer.parseInt(serijskiBroj));
                         DataTransfer.createNewTable(simKartica.getSerijskiBroj());
 
