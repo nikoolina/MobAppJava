@@ -140,6 +140,11 @@ public class DataTransfer {
 
         }
     }
+    /**
+     * metoda vraca broj telefona kartice koja je u trenutnoj funkciji
+     * @param serijskiBrojKartice
+     * @return broj telefona
+     */
     public static String mojBroj(int serijskiBrojKartice) {
     	Imenik k = new Imenik();
    
