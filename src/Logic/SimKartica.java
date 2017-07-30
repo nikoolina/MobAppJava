@@ -6,7 +6,7 @@
 package Logic;
 
 import Data.LocalDatabase.ConnectToDatabase;
-import Data.ServerDataBasePackage.DataTransferServer;
+import Data.ServerDataBasePackage.*;
 import java.io.Serializable;
 import java.sql.Connection;
 

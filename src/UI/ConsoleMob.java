@@ -12,7 +12,6 @@ import Logic.Imenik;
 import Logic.Poruka;
 import Logic.SimKartica;
 import java.util.Scanner;
-
 /**
  * Klasa koja sluzi za rad sa programom. koristi logiku ostalih klasa.
  *
