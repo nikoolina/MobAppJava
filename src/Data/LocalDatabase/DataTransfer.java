@@ -140,6 +140,35 @@ public class DataTransfer {
 
         }
     }
+    public static String mojBroj(int serijskiBrojKartice) {
+    	Imenik k = new Imenik();
+   
+    	        try {
+    	            Statement st = ConnectToDatabase.getConnection().createStatement();
+    	            ResultSet rs = st.executeQuery("SELECT BrojTelefona FROM Kartica where serijskibroj = 1 ");
+    	            while (rs.next()) {
+    	              
+    	            	
+    	         
+    	                k.setBrojTelefona(rs.getString("BrojTelefona"));
+    	        
+    	     
+    	            }
+    	        
+
+    	        } catch (SQLException e) {
+    	            System.out.println(" sqlException | nesto nije u redu !");
+    	            e.printStackTrace();
+    	        } catch (TimeoutException to) {
+    	            System.out.println("Timeout Exception | nesto nije u redu");
+    	            to.printStackTrace();
+    	        } catch (Exception ex) {
+    	            System.out.println("Exception | nesto nije u redu");
+
+    	        }
+    	       
+    	       return k.getBrojTelefona() ;
+    	    }
 
     /**
      * metoda koja resetira tablicu u bazi . Brise sve podatke iz tablice.

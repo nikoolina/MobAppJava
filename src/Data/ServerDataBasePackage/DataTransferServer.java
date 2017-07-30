@@ -110,10 +110,11 @@ public class DataTransferServer {
                     /**
                      * nesto nije u redu 
                      */
-            String sql = "Insert into Poruke(Posiljatelj, TextPoruke, Primatelj, Procitano) values(?, ?, ?, ?)";
+            String sql = "Insert into Poruke( Posiljatelj, TextPoruke, Primatelj, Procitano) values(?, ?, ?, ?)";
             PreparedStatement pstm = conn.prepareStatement(sql);
-            
+       
             pstm.setString(1, message.getBrTelPosiljatelj());
+            
             pstm.setString(2, message.getTextMessage());
             pstm.setString(3, message.getBrTelPrimatelj());
             pstm.setBoolean(4, false);

@@ -67,8 +67,8 @@ public class SimKartica implements Serializable
         this.puk = puk;
     }
 
-    public void setTelefonskiBroj(String telefonskiBroj) {
-        this.brojTelefona = telefonskiBroj;
+    public void setTelefonskiBroj(String brojTelefona) {
+        this.brojTelefona = brojTelefona;
     }
 
     public void setSerijskiBroj(int serijskiBroj) {

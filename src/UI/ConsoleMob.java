@@ -6,6 +6,7 @@
 package UI;
 
 import Client.SimClient;
+import Data.LocalDatabase.ConnectToDatabase;
 import Data.LocalDatabase.DataTransfer;
 import Data.ServerDataBasePackage.DataTransferServer;
 import Logic.Imenik;
@@ -44,7 +45,7 @@ public class ConsoleMob {
 
 //                client = new SimClient();
                 client.sayHi();
-
+               
                 break;
             }
             case "L": {
@@ -212,14 +213,12 @@ public class ConsoleMob {
                                 System.out.println("KARTICA NIJE AKTIVIRANA");
                             }
 
-                            //ovo je bilo//
-//                            mm.setBrTelPrimatelj(k.getBrojTelefona());
-                            //kraj novog
+                         
                         } else {
                             System.out.println("kontakt ne postoji..ili se vratite na MENU i unesite novi kontakt ");
 
                         }
-                        mm.setBrTelPosiljatelj(simClient.getSimKartica().getTelefonskiBroj());
+                       
                         System.out.println("Unesite poruku ... ");
 
                         Scanner sc1 = new Scanner(System.in);
@@ -227,16 +226,22 @@ public class ConsoleMob {
 
                         mm.setTextMessage(textPoruke);
                         mm.setBrTelPrimatelj(k.getBrojTelefona());
+                
+//                 
+//              
+                       
+                        mm.setBrTelPosiljatelj(DataTransfer.mojBroj(simKartica.getSerijskiBroj()));
+//                   
                         mm.setPorukaProcitana(false);
 
-//                        if (Data.ServerDataBasePackage.DataTransferServer.insertMessage(Data.ServerDataBasePackage.ConnectToServerBase.getConnection(), mm)) {
-//
-//                            System.out.println(ANSI_GREEN + "message send " + ANSI_RESET);
-//                        } else {
-//                            System.out.println(ANSI_RED + "message not send" + ANSI_RESET);
-//                        }
-//
-//                        break;
+                        if (Data.ServerDataBasePackage.DataTransferServer.insertMessage(Data.ServerDataBasePackage.ConnectToServerBase.getConnection(), mm)) {
+
+                            System.out.println(ANSI_GREEN + "message send " + ANSI_RESET);
+                        } else {
+                            System.out.println(ANSI_RED + "message not send" + ANSI_RESET);
+                        }
+
+                        break;
                     }
                     case 8: {
 

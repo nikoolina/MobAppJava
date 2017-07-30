@@ -21,7 +21,8 @@ public class ConnectToServerBase {
    
     /**
      * setting up a connection
-     *
+     * metoda koja se konektira na server 
+     * 
      * 
      * @return 
      * @throws Exception

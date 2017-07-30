@@ -23,6 +23,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 //
 
+import Data.LocalDatabase.ConnectToDatabase;
+import Data.LocalDatabase.DataTransfer;
+
 /**
  * Klasa koja sadrži informacije za "unikatnu" sim karticu. Metodom run()
  * omogucava spajenje na server.
@@ -133,6 +136,11 @@ public class SimClient {
                         sim.setPuk(puk);
                         sim.setTelefonskiBroj(brTelefona);
                         
+                        /**
+                         * metoda ubacuje sim karticu u bazu Mobitel tablica Kartica
+                         */
+                       DataTransfer.insertSim(ConnectToDatabase.getConnection(), sim);
+                        
                         System.out.println("SimClient: " + sim);
                         pw.println(pin + " " + puk + " " + brTelefona);
                         pw.flush();
@@ -152,7 +160,7 @@ public class SimClient {
             e.getMessage();
         }
 
-//        return sim = new SimKartica();
+
     }
 
     public void posaljiPinNaServer() throws IOException, InterruptedException {
@@ -194,6 +202,7 @@ public class SimClient {
                 sim.setPin(pin);
                 System.out.println("Logging ...");
                 pw.println(pin);
+              
                 pw.flush();
                 break;
 
