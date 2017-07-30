@@ -45,7 +45,7 @@ public class SimKartica implements Serializable
            this.serijskiBroj = userSim.serijskiBroj;
         } 
         else {
-            System.out.println("SERIJSKI BROJ NE POSTOJI");
+            System.out.println("Serial number does not exist");
             
         }
         
@@ -89,10 +89,10 @@ public class SimKartica implements Serializable
   */
     public boolean provjeriPin(int pin) {
         if (this.pin == pin) {
-            System.out.println("pin je tocan");
+            System.out.println("pin is ok");
             return true;
         } else {
-            System.out.println("pin nije tocan");
+            System.out.println("pin is not ok");
             return false;
         }
     }
@@ -105,10 +105,10 @@ public class SimKartica implements Serializable
     public boolean promjenaPina(int noviPin, int stariPin) {
         if (stariPin == this.pin) {
             pin = noviPin;
-            System.out.println("pin promijenjen , novi pin : " + noviPin);
+            System.out.println("pin changed , new pin : " + noviPin);
             return true;
         } else {
-            System.out.println("pin nije promijenjen");
+            System.out.println("pin was not changed");
             return false;
         }
     }
@@ -119,10 +119,10 @@ public class SimKartica implements Serializable
      */
     public boolean provjeriPuk(int puk) {
         if (this.puk == puk) {
-            System.out.println("puk je tocan");
+            System.out.println("puk is ok");
             return true;
         } else {
-            System.out.println("puk nije tocan");
+            System.out.println("puk is not ok");
             return false;
         }
     }
@@ -137,11 +137,11 @@ public class SimKartica implements Serializable
         if (puk == this.puk && pin == this.pin) {
 
             this.pin = noviPin;
-            System.out.println("puk i pin su valjani ,pin je vracen na tvornicku postavku :" + noviPin);
+            System.out.println("puk & pin are ok ,pin is returned to the factory setting :" + noviPin);
 
             return true;
         } else {
-            System.out.println("puk ili pin nisu valjani, pin nije vracen na staro ");
+            System.out.println("puk or pin are not good ");
         }
         return false;
     }

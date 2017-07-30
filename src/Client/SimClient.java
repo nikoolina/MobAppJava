@@ -120,14 +120,14 @@ public class SimClient {
 //                brojTelefona = konzola.nextLine();
 
                 Thread.sleep(200);
-                System.out.println("Unesite PIN: ");
+                System.out.println("Enter PIN: ");
                 int pin = sc.nextInt();
-                System.out.println("Unesite PUK: ");
+                System.out.println("Enter PUK: ");
                 int puk = sc.nextInt();
-                System.out.println("Unesite broj telefona: ");
+                System.out.println("Enter phone number: ");
                 brTelefona = sc.next();
 
-                System.out.println("Aktivacija ( D )");
+                System.out.println("Activate ( D )");
                 s = sc.next();
                 switch (s) {
                     case "D": {
@@ -148,7 +148,7 @@ public class SimClient {
                         break;
                     }
                     default: {
-                        System.out.println("kartica nije aktivirana !");
+                        System.out.println("card was not activated !");
                         break;
                     }
 
@@ -219,7 +219,7 @@ public class SimClient {
 
         Scanner sc = new Scanner(incoming.getInputStream());
         String serBr = sc.nextLine();
-//        System.out.println("SERIJSKI BROJ ::: " + serBr);
+
        
         return serBr.substring(serBr.lastIndexOf(" ") + 1);
     }

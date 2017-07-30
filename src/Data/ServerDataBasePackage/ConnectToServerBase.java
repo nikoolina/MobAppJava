@@ -41,13 +41,13 @@ public class ConnectToServerBase {
             
             DatabaseMetaData dmd = conn.getMetaData();
             String url1 = dmd.getURL();
-            System.out.println("ja sam url od baze " + url);
+//            System.out.println("ja sam url od baze " + url);
             
             System.out.println("Connected to database Server!");
             return conn;
         } catch (Exception e) {
 
-            System.out.println(e);
+            System.out.println("Server database error" + e);
         }
 
         return null;

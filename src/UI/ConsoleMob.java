@@ -34,8 +34,8 @@ public class ConsoleMob {
         final String ANSI_BLUE = "\u001B[34m";
 
 //ODABIR SIM KARTICE    
-        System.out.println(ANSI_YELLOW + "DOBRODOŠLI ---- MOBAPP ---- PC VERSION_0.1" + ANSI_RESET);
-        System.out.println("Želite li aktivirati karticu ili se ulogirati ? (A/L)");
+        System.out.println(ANSI_YELLOW + "WELCOME ---- MOBAPP ---- PC VERSION_0.1" + ANSI_RESET);
+        System.out.println("Do you want to Activate a card or Login ? (A/L)");
         String odabir = sc.nextLine();
 
         SimKartica simKartica;
@@ -53,19 +53,19 @@ public class ConsoleMob {
                 break;
             }
             default: {
-                System.out.println("Nije unesena SimKartica ");
+                System.out.println("Sim Card has not been added ");
                 break;
             }
         }
 
         String serijskiBroj = client.dohvatiSerijskiBroj();
 
-        System.out.println("SERIJSKI BROJ ::: " + serijskiBroj);
+        System.out.println("serial number : " + serijskiBroj);
         
         simKartica = new SimKartica();
 
         if (serijskiBroj.equals("0")) {
-            System.out.println("IZASLI STE IZ PROGRAMA");
+            System.out.println("Program closed!");
         } else {
 // NAKON ODABIRA SIM KARTICE.....
 
@@ -196,30 +196,29 @@ public class ConsoleMob {
                         simClient.run();
                         Poruka mm = new Poruka();
 
-                        System.out.println("unesite ime primatelja");
+                        System.out.println("enter reciever name");
                         String primatelj = sc.next();
 
                         k = DataTransfer.findKontakt(Data.LocalDatabase.ConnectToDatabase.getConnection(), primatelj, simKartica.getSerijskiBroj());
                         if (k != null) {
 
-                            //novo
+                         
                             String brojPrimatelja = k.getBrojTelefona();
-                            // ovo ne moze tu ici jer server nije na istom racunalu!!
-//                            SimKartica simPrimatelja = DataTransferServer.findSim(Data.ServerDataBasePackage.ConnectToServerBase.getConnection(), brojPrimatelja);
+//                             SimKartica simPrimatelja = DataTransferServer.findSim(Data.ServerDataBasePackage.ConnectToServerBase.getConnection(), brojPrimatelja);
                             System.out.println(brojPrimatelja);	
                             if (brojPrimatelja != null) {
                                 mm.setBrTelPrimatelj(brojPrimatelja);
                             } else {
-                                System.out.println("KARTICA NIJE AKTIVIRANA");
+                                System.out.println("SIM CARD is not activated");
                             }
 
                          
                         } else {
-                            System.out.println("kontakt ne postoji..ili se vratite na MENU i unesite novi kontakt ");
+                            System.out.println("contact does not exist..go back to MENU and enter new contact ");
 
                         }
                        
-                        System.out.println("Unesite poruku ... ");
+                        System.out.println("write message ... ");
 
                         Scanner sc1 = new Scanner(System.in);
                         String textPoruke = sc1.nextLine();
@@ -236,9 +235,9 @@ public class ConsoleMob {
 
                         if (Data.ServerDataBasePackage.DataTransferServer.insertMessage(Data.ServerDataBasePackage.ConnectToServerBase.getConnection(), mm)) {
 
-                            System.out.println(ANSI_GREEN + "message send " + ANSI_RESET);
+                            System.out.println(ANSI_GREEN + " message sent " + ANSI_RESET);
                         } else {
-                            System.out.println(ANSI_RED + "message not send" + ANSI_RESET);
+                            System.out.println(ANSI_RED + "message was not sent " + ANSI_RESET);
                         }
 
                         break;
@@ -249,7 +248,7 @@ public class ConsoleMob {
                     }
                 }
             } while (num != 0);
-            System.out.println(ANSI_GREEN + " Good bye!!!" + ANSI_RESET);
+            System.out.println(ANSI_GREEN + "good bye!!" + ANSI_RESET);
         }
     }
 }
